@@ -7,7 +7,6 @@ function App() {
   const [isEditProfileModalOpen, toggleProfileModal] = React.useState(false);
   const [isAddPlaceModalOpen, togglePlaceModal] = React.useState(false);
   const [isEditAvatarModalOpen, toggleAvatarModal] = React.useState(false);
-  const [isImagePopupModalOpen, toggleImagePopup] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState('');
 
   function handleEditAvatarClick() {
@@ -27,12 +26,10 @@ function App() {
    togglePlaceModal(false);
    toggleAvatarModal(false);
    setSelectedCard('');
-   toggleImagePopup(false);
   }
 
   function handleCardClick(card) {
     setSelectedCard(card);
-    toggleImagePopup(true);
   }
 
 
@@ -47,7 +44,6 @@ function App() {
       onAddPlace={handleAddPlaceClick}
       isEditAvatarOpen={isEditAvatarModalOpen}
       onEditAvatar={handleEditAvatarClick}
-      isImagePopupOpen={isImagePopupModalOpen}
       onCardClick={(card) => handleCardClick(card)}
       selectedCard={selectedCard}
       onClose={closeAllPopups}

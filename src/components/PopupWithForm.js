@@ -4,9 +4,9 @@ import { render } from '@testing-library/react';
 function PopupWithForm(props) {
 
   return(
-<div className={`${props.name} modal ${props.isOpen ? 'modal__open' : ''}`} onClick={props.close}>
+<div className={`${props.name} modal ${props.isOpen ? 'modal__open' : ''}`} onClick={props.onClose}>
         <div className="modal__window">
-          <button className="modal__close link" onClick={props.close}></button>
+          <button className="modal__close link" onClick={props.onClose}></button>
           <form action="submit" className="modal__form" name={`${props.name}`} noValidate>
             <h2 className="modal__heading">{props.title}</h2>
             {props.children}

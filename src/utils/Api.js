@@ -15,7 +15,6 @@ class Api {
       headers: this._headers
     })
     .then ( res => this._checkResponse(res))
-    .catch( err => console.log(err))
   }
 
   getProfileInfo() {
@@ -23,7 +22,6 @@ class Api {
       headers: this._headers
     })
     .then ( res => this._checkResponse(res))
-    .catch( err => console.log(err))
   }
 
   getAppInfo() {
