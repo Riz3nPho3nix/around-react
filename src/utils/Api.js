@@ -50,7 +50,6 @@ class Api {
       })
     })
     .then ( res => this._checkResponse(res))
-    .catch( err => console.log(err))
   }
 
   deleteCard(cardID) {
@@ -59,7 +58,6 @@ class Api {
       headers: this._headers
     })
     .then ( res => this._checkResponse(res))
-    .catch( err => console.log(err))
   }
 
   cardLike(cardID) {
@@ -68,7 +66,6 @@ class Api {
       headers: this._headers
     })
     .then ( res => this._checkResponse(res))
-    .catch( err => console.log(err))
   }
 
   cardUnlike(cardID) {
@@ -77,7 +74,6 @@ class Api {
       headers: this._headers
     })
     .then ( res => this._checkResponse(res))
-    .catch( err => console.log(err))
   }
 
   updateAvatar(url) {
@@ -89,7 +85,6 @@ class Api {
       })
     })
     .then ( res => this._checkResponse(res))
-    .catch( err => console.log(err))
   }
 }
 

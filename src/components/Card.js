@@ -23,10 +23,11 @@ function Card(props) {
 
   const cardDeleteButtonClassName = (
     `card__delete-btn ${isOwner ? 'card__delete-btn_visible' : 'card__delete-btn_hidden'}`
-  )
-const cardLikeButtonClassName = (
-  `card__heart ${isLiked ? 'card__liked':''}`
-)
+  );
+  
+  const cardLikeButtonClassName = (
+    `card__heart ${isLiked ? 'card__liked':''}`
+  );
 
   return (
     <li className="card">

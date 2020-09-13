@@ -11,7 +11,6 @@ function AddPlacePopup(props) {
     props.onAddCard({
       name, link
     });
-    props.onClose();
   }
 
   function handleNameChange(e) {

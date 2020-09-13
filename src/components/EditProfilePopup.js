@@ -23,7 +23,6 @@ function EditProfilePopup(props) {
     props.onUpdateUser({
       name, about:description
     });
-    props.onClose();
   }
 
 return(

@@ -43,27 +43,20 @@ function App() {
 
   function handleUpdateUser(userInfo) {
     api.setProfileInfo(userInfo)
-    .then (data => {
-      currentUser.name = data.name;
-      currentUser.about = data.about;
+    .then (data => {setCurrentUserData({...currentUser, name:data.name, about:data.about})
     })
+    .then(() => {closeAllPopups()})
     .catch(err => console.log(err));
   }
 
   function handleUpdateAvatar(url) {
-    console.log(url);
     api.updateAvatar(url)
-    .then(res => currentUser.avatar=res)
+    .then(res => {setCurrentUserData({...currentUser, avatar:res.avatar})})
+    .then(() => {closeAllPopups()})
     .catch(err => console.log(err));
   }
 
-  React.useEffect(() => {
-    api.getProfileInfo()
-    .then ((data) => {
-      setCurrentUserData(data);
-    })
-    .catch( err => console.log(err));
-  });
+
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -76,7 +69,8 @@ function App() {
     res.then((newCard) => {
       const newCards = cards.map((c) => c._id === card._id ? newCard : c);
       setCards(newCards);
-    });
+    })
+    .catch( err => console.log(err));
 }
 function handleCardDelete(card) {
   api.deleteCard(card._id)
@@ -84,17 +78,30 @@ function handleCardDelete(card) {
     const newArray = cards.filter(c => c._id !== card._id);
     setCards(newArray);
   })
+  .catch( err => console.log(err))
 }
 
 function handleAddCard(cardInfo) {
   api.createCard(cardInfo)
   .then (newCard => setCards([...cards, newCard]))
+  .then(() => {closeAllPopups()})
+  .catch( err => console.log(err))
 }
 
+React.useEffect(() => {
+  api.getProfileInfo()
+  .then ((data) => {
+    setCurrentUserData(data);
+  })
+  .catch( err => console.log(err));
+}, []);
 
+React.useEffect(() => {
   api.getInitialCards()
   .then (cards => {setCards(cards)})
   .catch( err => console.log(err));
+}, []);
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
