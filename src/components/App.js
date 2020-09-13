@@ -2,12 +2,17 @@ import React from 'react';
 import Header from './Header.js'
 import Main from './Main.js';
 import Footer from './Footer.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import api from '../utils/Api.js';
 
 function App() {
+  const [currentUser, setCurrentUserData] = React.useState({});
   const [isEditProfileModalOpen, toggleProfileModal] = React.useState(false);
   const [isAddPlaceModalOpen, togglePlaceModal] = React.useState(false);
   const [isEditAvatarModalOpen, toggleAvatarModal] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState('');
+  const [cards, setCards] = React.useState([]);
+  
 
   function handleEditAvatarClick() {
    toggleAvatarModal(true);
@@ -32,8 +37,64 @@ function App() {
     setSelectedCard(card);
   }
 
+  function handleUpdateUser(userInfo) {
+    console.log(userInfo);
+    api.setProfileInfo(userInfo)
+    .then (data => {
+      console.log(data);
+      currentUser.name = data.name;
+      currentUser.about = data.about;
+    })
+    .catch(err => console.log(err));
+  }
+
+  function handleUpdateAvatar(url) {
+    api.updateAvatar(url)
+    .then(res => currentUser.avatar=res)
+    .catch(err => console.log(err));
+  }
+
+  React.useEffect(() => {
+    api.getProfileInfo()
+    .then ((data) => {
+      setCurrentUserData(data);
+    })
+    .catch( err => console.log(err));
+  });
+
+  async function handleCardLike(card) {
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    let res;
+    if (isLiked) {
+      res = api.cardUnlike(card._id)
+    } else {
+      res = api.cardLike(card._id)
+    }
+    res.then((newCard) => {
+      const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+      setCards(newCards);
+    });
+}
+function handleCardDelete(card) {
+  api.deleteCard(card._id)
+  .then (() => {
+    const newArray = cards.filter(c => c._id !== card._id);
+    setCards(newArray);
+  })
+}
+
+function handleAddCard(cardInfo) {
+  api.createCard(cardInfo)
+  .then (newCard => setCards([...cards, newCard]))
+}
+
+
+  api.getInitialCards()
+  .then (cards => {setCards(cards)})
+  .catch( err => console.log(err));
 
   return (
+    <CurrentUserContext.Provider value={currentUser}>
     <div className="content">
     <div className="page">
       <Header />
@@ -47,10 +108,17 @@ function App() {
       onCardClick={(card) => handleCardClick(card)}
       selectedCard={selectedCard}
       onClose={closeAllPopups}
+      onUpdateUser={(userInfo) => handleUpdateUser(userInfo)}
+      onUpdateAvatar={(url) => handleUpdateAvatar(url)}
+      cards={cards}
+      onCardLike = {handleCardLike}
+      onCardDelete = {handleCardDelete}
+      onAddCard = {(cardInfo) => handleAddCard(cardInfo)}
       />
       <Footer />
     </div>
     </div>
+    </CurrentUserContext.Provider>
   );
 }
 

@@ -1,3 +1,6 @@
+@import url('./_visible/card__delete-btn_visible.css');
+@import url('./_hidden/card__delete-btn_hidden.css');
+
 .card__delete-btn {
     background-color: transparent;
     border: none;
