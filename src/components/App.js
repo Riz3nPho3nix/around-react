@@ -4,6 +4,10 @@ import Main from './Main.js';
 import Footer from './Footer.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import api from '../utils/Api.js';
+import EditProfilePopup from './EditProfilePopup';
+import AddPlacePopup from './AddPlacePopup';
+import EditAvatarPopup from './EditAvatarPopup';
+import ImagePopup from './ImagePopup.js';
 
 function App() {
   const [currentUser, setCurrentUserData] = React.useState({});
@@ -38,10 +42,8 @@ function App() {
   }
 
   function handleUpdateUser(userInfo) {
-    console.log(userInfo);
     api.setProfileInfo(userInfo)
     .then (data => {
-      console.log(data);
       currentUser.name = data.name;
       currentUser.about = data.about;
     })
@@ -49,6 +51,7 @@ function App() {
   }
 
   function handleUpdateAvatar(url) {
+    console.log(url);
     api.updateAvatar(url)
     .then(res => currentUser.avatar=res)
     .catch(err => console.log(err));
@@ -62,7 +65,7 @@ function App() {
     .catch( err => console.log(err));
   });
 
-  async function handleCardLike(card) {
+  function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     let res;
     if (isLiked) {
@@ -99,23 +102,22 @@ function handleAddCard(cardInfo) {
     <div className="page">
       <Header />
       <Main 
-      isEditProfileOpen={isEditProfileModalOpen}
+      
       onEditProfile={handleEditProfileClick}
-      isAddPlaceOpen={isAddPlaceModalOpen}
       onAddPlace={handleAddPlaceClick}
-      isEditAvatarOpen={isEditAvatarModalOpen}
       onEditAvatar={handleEditAvatarClick}
       onCardClick={(card) => handleCardClick(card)}
       selectedCard={selectedCard}
       onClose={closeAllPopups}
-      onUpdateUser={(userInfo) => handleUpdateUser(userInfo)}
-      onUpdateAvatar={(url) => handleUpdateAvatar(url)}
       cards={cards}
       onCardLike = {handleCardLike}
       onCardDelete = {handleCardDelete}
-      onAddCard = {(cardInfo) => handleAddCard(cardInfo)}
       />
       <Footer />
+      <EditProfilePopup isOpen={isEditProfileModalOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+      <AddPlacePopup isOpen={isAddPlaceModalOpen} onClose={closeAllPopups} onAddCard={handleAddCard} />
+      <EditAvatarPopup isOpen={isEditAvatarModalOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+      <ImagePopup onClose={closeAllPopups} card={selectedCard} />
     </div>
     </div>
     </CurrentUserContext.Provider>

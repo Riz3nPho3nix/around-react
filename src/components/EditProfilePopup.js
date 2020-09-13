@@ -8,6 +8,7 @@ function EditProfilePopup(props) {
   const [name, setName] = React.useState('');
   const [description, setDescription] =React.useState('');
 
+
   function handleNameChange(e) {
     setName(e.target.value);
   }
@@ -25,15 +26,10 @@ function EditProfilePopup(props) {
     props.onClose();
   }
 
-  React.useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
-  }, [currentUser])
-
 return(
 <PopupWithForm name='profile-edit' title='Edit Profile' isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit}>
-  <input className='modal__input' name='name' type="text" minLength="2" maxLength="40" required placeholder={name} value={name} onChange={handleNameChange} />
-  <input className='modal__input' name='about' type="text" minLength="2" maxLength="200" required placeholder={description} value={description} onChange={handleDescriptionChange} />
+  <input className='modal__input' name='name' type="text" minLength="2" maxLength="40" required defaultValue={currentUser.name} onChange={handleNameChange} />
+  <input className='modal__input' name='about' type="text" minLength="2" maxLength="200" required defaultValue={currentUser.about} onChange={handleDescriptionChange} />
 </PopupWithForm>
 
 )}

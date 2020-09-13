@@ -1,9 +1,5 @@
 import React from 'react';
-import ImagePopup from './ImagePopup.js';
 import Card from './Card.js';
-import EditProfilePopup from './EditProfilePopup';
-import AddPlacePopup from './AddPlacePopup';
-import EditAvatarPopup from './EditAvatarPopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Main(props) {
@@ -29,13 +25,6 @@ function Main(props) {
             return <Card key={card._id} card={card} onCardLike={(card) => {props.onCardLike(card)}} onCardClick={(card) => {props.onCardClick(card)}} onCardDelete={(card) => {props.onCardDelete(card)}} />
           })}
         </ul>
-      <EditProfilePopup isOpen={props.isEditProfileOpen} onClose={props.onClose} onUpdateUser={(userInfo) => {props.onUpdateUser({userInfo})}} />
-
-      <AddPlacePopup isOpen={props.isAddPlaceOpen} onClose={props.onClose} onAddCard={(cardInfo) => {props.onAddCard(cardInfo)}} />
-
-      <EditAvatarPopup isOpen={props.isEditAvatarOpen} onClose={props.onClose} onUpdateAvatar={(url) => {props.onUpdateAvatar(url)}} />
-
-      <ImagePopup onClose={props.onClose} card={props.selectedCard} />
     </main>
     </CurrentUserContext.Provider>
   )
